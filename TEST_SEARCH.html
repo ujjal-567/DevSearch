@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Test - React Query</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .result { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .result h3 { margin: 0; color: #4285F4; }
+        .result p { margin: 5px 0; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Search Engine Test</h1>
+    <button onclick="testSearch('react')">Test: Search 'react'</button>
+    <button onclick="testSearch('html')">Test: Search 'html'</button>
+    <button onclick="testSearch('python')">Test: Search 'python'</button>
+    <button onclick="testSearch('recat')">Test: Search 'recat' (misspell)</button>
+    <hr>
+    <div id="results"></div>
+
+    <script src="script.js"></script>
+    <script>
+        function testSearch(query) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing search for: <strong>' + query + '</strong></p>';
+            
+            // Small delay for initialization
+            setTimeout(() => {
+                if (!documents || documents.length === 0) {
+                    resultsDiv.innerHTML += '<p class="error">ERROR: Documents not loaded!</p>';
+                    return;
+                }
+
+                // Manually run the search logic
+                const query_lower = query.toLowerCase();
+                const searchResults = documents.filter(doc => {
+                    const titleLower = doc.title.toLowerCase();
+                    const contentLower = doc.content.toLowerCase();
+                    return titleLower.includes(query_lower) || contentLower.includes(query_lower);
+                });
+
+                if (searchResults.length === 0) {
+                    resultsDiv.innerHTML += '<p class="error">No exact matches found.</p>';
+                    resultsDiv.innerHTML += '<p>Total documents: ' + documents.length + '</p>';
+                    return;
+                }
+
+                resultsDiv.innerHTML += '<p class="success">Found ' + searchResults.length + ' exact match(es)</p>';
+                searchResults.forEach(doc => {
+                    resultsDiv.innerHTML += `
+                        <div class="result">
+                            <h3>${doc.title}</h3>
+                            <p><strong>Language:</strong> ${doc.language}</p>
+                            <p><strong>Content:</strong> ${doc.content.substring(0, 100)}...</p>
+                        </div>
+                    `;
+                });
+            }, 500);
+        }
+    </script>
+</body>
+</html>

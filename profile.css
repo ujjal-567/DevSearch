@@ -1,0 +1,300 @@
+/*
+  Modern, responsive, and animated profile page for any user-based AI app or system.
+  Features: Profile pic, username, bio, skills, stats, achievements, theme, security, activity, and more.
+  Supports dark/light mode and mobile.
+*/
+:root {
+  --primary: #4285F4;
+  --primary-dark: #3367D6;
+  --accent: #34a853;
+  --danger: #ea4335;
+  --bg: #f7f9fa;
+  --bg-dark: #181a20;
+  --card: #fff;
+  --card-dark: #23272f;
+  --text: #222;
+  --text-dark: #f7f9fa;
+  --muted: #b0b8c1;
+  --shadow: 0 4px 32px rgba(66,133,244,0.10), 0 1.5px 4px rgba(0,0,0,0.04);
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+.profile-main {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 24px;
+  background: var(--card);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  transition: background 0.3s;
+}
+body.dark .profile-main {
+  background: var(--card-dark);
+}
+.profile-left {
+  flex: 1 1 260px;
+  min-width: 260px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.profile-pic-lg {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+  box-shadow: 0 2px 12px rgba(66,133,244,0.10);
+  background: #e3eafc;
+  margin-bottom: 8px;
+  transition: border 0.2s;
+}
+.profile-pic-upload {
+  display: none;
+}
+.profile-pic-label {
+  position: relative;
+  top: -36px;
+  left: 40px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(66,133,244,0.10);
+  transition: background 0.2s;
+}
+.profile-pic-label:hover {
+  background: var(--primary-dark);
+}
+.profile-username {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+}
+.profile-bio {
+  font-size: 1rem;
+  color: var(--muted);
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+.profile-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.skill-tag {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 0.95em;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+body.dark .skill-tag {
+  background: var(--accent);
+}
+.profile-level {
+  margin: 10px 0 0 0;
+  width: 100%;
+}
+.level-bar {
+  background: #e3eafc;
+  border-radius: 8px;
+  height: 16px;
+  width: 100%;
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+.level-bar-inner {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.7s cubic-bezier(.4,2,.6,1);
+}
+.level-label {
+  font-size: 0.95em;
+  color: var(--muted);
+  text-align: right;
+}
+.profile-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0 0;
+  justify-content: center;
+}
+.badge {
+  background: #fffbe6;
+  color: #bfa100;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.95em;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(255,215,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+body.dark .badge {
+  background: #23272f;
+  color: #ffe066;
+}
+.profile-right {
+  flex: 2 1 340px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.profile-section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+}
+body.dark .profile-section-title {
+  color: var(--accent);
+}
+.profile-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+.stat-card {
+  background: #e3eafc;
+  border-radius: 10px;
+  padding: 12px 18px;
+  min-width: 110px;
+  text-align: center;
+  flex: 1 1 110px;
+  box-shadow: 0 1px 4px rgba(66,133,244,0.06);
+  transition: background 0.2s;
+}
+body.dark .stat-card {
+  background: #23272f;
+}
+.stat-label {
+  font-size: 0.95em;
+  color: var(--muted);
+}
+.stat-value {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+body.dark .stat-value {
+  color: var(--accent);
+}
+.profile-activity {
+  background: #f1f3f6;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 4px rgba(66,133,244,0.04);
+  margin-bottom: 8px;
+  min-height: 60px;
+  transition: background 0.2s;
+}
+body.dark .profile-activity {
+  background: #23272f;
+}
+.activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.activity-list li {
+  margin-bottom: 6px;
+  font-size: 0.98em;
+  color: var(--text);
+}
+body.dark .activity-list li {
+  color: var(--text-dark);
+}
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.profile-action-btn {
+  background: linear-gradient(135deg,#4285F4,#3367D6);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1em;
+}
+.profile-action-btn:hover {
+  background: linear-gradient(135deg,#3367D6,#4285F4);
+}
+.theme-toggle {
+  background: #e3eafc;
+  color: var(--primary-dark);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.2s;
+}
+body.dark .theme-toggle {
+  background: #23272f;
+  color: #fff;
+}
+.theme-toggle {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 999;
+}
+@media (max-width: 900px) {
+  .profile-main {
+    flex-direction: column;
+    gap: 18px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+  .profile-left, .profile-right {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .theme-toggle {
+    top: 80px;
+  }
+}

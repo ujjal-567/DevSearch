@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test - Duplicate Key Fix</title>
+</head>
+<body>
+    <h1>Testing Search After Duplicate Key Removal</h1>
+    <p>Open browser console (F12) and run these tests:</p>
+    <pre>
+// Test 1: Check if duplicates removed
+console.log('languageLinks keys:', Object.keys(languageLinks).length);
+console.log('Duplicate c?', Object.keys(languageLinks).filter(k => k === 'c').length);
+console.log('Duplicate csharp?', Object.keys(languageLinks).filter(k => k === 'csharp').length);
+
+// Test 2: Check structure consistency
+console.log('c entry:', languageLinks.c);
+console.log('csharp entry:', languageLinks.csharp);
+console.log('php entry:', languageLinks.php);
+console.log('laravel entry:', languageLinks.laravel);
+console.log('flutter entry:', languageLinks.flutter);
+
+// Test 3: Search test
+executeSearch('laravel');
+console.log('Search results for laravel:', currentResults);
+
+// Test 4: Check external links generation
+if (currentResults.length > 0) {
+    console.log('First result:', currentResults[0]);
+    console.log('First result docs count:', currentResults[0].docs ? currentResults[0].docs.length : 'N/A');
+}
+    </pre>
+    
+    <script src="script.js"></script>
+    <script>
+        console.log('✓ script.js loaded');
+        console.log('languageLinks.c:', languageLinks.c);
+        console.log('languageLinks.csharp:', languageLinks.csharp);
+        console.log('languageLinks.php:', languageLinks.php);
+        console.log('languageLinks.laravel:', languageLinks.laravel);
+        console.log('languageLinks.flutter:', languageLinks.flutter);
+        console.log('languageLinks.vue:', languageLinks.vue);
+        
+        // Quick test
+        console.log('\n=== RUNNING SEARCH TEST ===');
+        executeSearch('laravel');
+        console.log('Search results:', currentResults);
+        if (currentResults.length > 0) {
+            console.log('First result title:', currentResults[0].title);
+            console.log('First result has docs:', currentResults[0].externalLinks ? 'YES' : 'NO');
+        }
+    </script>
+</body>
+</html>

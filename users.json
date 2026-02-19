@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1763880134810,
+    "name": "ujjal",
+    "email": "yamehag166@cotigz.com",
+    "passwordHash": "$2b$10$HKiCKLWpgBVhsN8skOqHv.J.Mruo2bYhiTnzWdYy2MrYP/y3GdIJO",
+    "createdAt": "2025-11-23T06:42:14.810Z"
+  },
+  {
+    "id": 1763881877821,
+    "name": "Ujjal Das",
+    "email": "ud202660@gmail.com",
+    "passwordHash": "$2b$10$dPY4LVc0lMLmMBoCwLtaxO6.4rupimLUoAo3hJquu8mDqCiLfOJNC",
+    "createdAt": "2025-11-23T07:11:17.821Z"
+  }
+]

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D UI Features - DevSearch</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, rgba(242, 245, 255, 0.8) 0%, rgba(248, 249, 250, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(66, 133, 244, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+        }
+        .feature-card:hover {
+            transform: translateY(-12px) rotateX(5deg) rotateY(-5deg) scale(1.03);
+            box-shadow: 0 20px 50px rgba(66, 133, 244, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+        .feature-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #4285F4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-title i {
+            font-size: 28px;
+        }
+        .feature-desc {
+            color: #5F6368;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .code-snippet {
+            background: #f5f5f5;
+            border-left: 4px solid #4285F4;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .demo-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4285F4, #3367D6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .demo-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-cubes"></i> 3D UI Features
+            </div>
+        </header>
+
+        <div class="feature-container">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="font-size: 48px; background: linear-gradient(135deg, #4285F4, #EA4335, #34A853, #FBBC04); background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;">🎨 Advanced 3D UI</h1>
+                <p style="font-size: 18px; color: #5F6368;">Modern, interactive, and immersive user experience</p>
+            </div>
+
+            <!-- Feature 1: Glassmorphism -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-glass-water"></i> Glassmorphism Design
+                </div>
+                <div class="feature-desc">
+                    All major UI elements now use glassmorphic effects with backdrop blur, creating a modern frosted glass appearance. Elements have layered depth with semi-transparent backgrounds and subtle inner shadows.
+                </div>
+                <div class="code-snippet">
+                    background: rgba(248, 249, 250, 0.8);<br>
+                    backdrop-filter: blur(10px);<br>
+                    border: 2px solid rgba(66, 133, 244, 0.1);
+                </div>
+            </div>
+
+            <!-- Feature 2: 3D Parallax -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-cube"></i> 3D Parallax Effects
+                </div>
+                <div class="feature-desc">
+                    Mouse movement triggers 3D rotation and tilt effects on cards. The closer your mouse, the stronger the 3D tilt and scale effects. Creates an immersive depth perception.
+                </div>
+                <div class="code-snippet">
+                    rotateX(${angleX}deg)<br>
+                    rotateY(${angleY}deg)<br>
+                    scale(${1 + proximity * 0.02})
+                </div>
+            </div>
+
+            <!-- Feature 3: Dynamic Shadows -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-lightbulb"></i> Dynamic Adaptive Shadows
+                </div>
+                <div class="feature-desc">
+                    Shadow intensity and blur increase based on mouse proximity and hover state. Provides visual feedback and enhances the 3D layering effect. Shadows cast realistic light based on element depth.
+                </div>
+                <div class="code-snippet">
+                    box-shadow: 0 ${shadowStrength}px ${shadowStrength + 20}px rgba(...);
+                </div>
+            </div>
+
+            <!-- Feature 4: Floating Animations -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-feather"></i> Floating & Float Animations
+                </div>
+                <div class="feature-desc">
+                    The main title has a subtle floating animation combined with background gradient shimmer. Creates continuous visual interest without being distracting.
+                </div>
+                <div class="code-snippet">
+                    @keyframes floatTitle {<br>
+                    &nbsp;&nbsp;0% { transform: translateY(0px); }<br>
+                    &nbsp;&nbsp;50% { transform: translateY(-10px); }<br>
+                    }</div>
+            </div>
+
+            <!-- Feature 5: Gradient Effects -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-palette"></i> Advanced Gradient Backgrounds
+                </div>
+                <div class="feature-desc">
+                    Dynamic radial gradients animate in the background creating a breathing effect. Multi-color animated borders and text shadows enhance visual hierarchy and depth.
+                </div>
+                <div class="code-snippet">
+                    radial-gradient(circle at 20% 50%, rgba(...) 0%, transparent 50%)<br>
+                    animation: backgroundShift 15s ease-in-out infinite;
+                </div>
+            </div>
+
+            <!-- Feature 6: Interactive Cards -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-layer-group"></i> Interactive 3D Cards
+                </div>
+                <div class="feature-desc">
+                    Every card element (category, result, search box) responds to user interaction with:
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>3D tilt on hover</li>
+                        <li>Smooth scale transitions</li>
+                        <li>Gradient background on hover</li>
+                        <li>Enhanced shadow effects</li>
+                        <li>Shimmer animation on interaction</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature 7: Microphone Button -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-microphone"></i> Enhanced Microphone Button
+                </div>
+                <div class="feature-desc">
+                    The voice search button includes a pulsing glow effect when active. The red color with shadow animation provides clear visual feedback during voice recognition.
+                </div>
+                <div class="code-snippet">
+                    .voice-btn.listening {<br>
+                    &nbsp;&nbsp;animation: pulse 1.5s infinite;<br>
+                    &nbsp;&nbsp;box-shadow: 0 0 30px rgba(255, 107, 107, 0.8);<br>
+                    }</div>
+            </div>
+
+            <!-- Feature 8: Scroll Parallax -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-scroll"></i> Scroll-based Parallax
+                </div>
+                <div class="feature-desc">
+                    Title moves slower than the scroll, creating a parallax depth effect. Combined with subtle rotation, it enhances the perception of depth as you scroll down the page.
+                </div>
+                <div class="code-snippet">
+                    title.style.transform = `translateY(${scrollTop * 0.5}px) rotateZ(...)`
+                </div>
+            </div>
+
+            <!-- Feature 9: Cubic Bezier Timing -->
+            <div class="feature-card">
+                <div class="feature-title">
+                    <i class="fas fa-bezier-curve"></i> Custom Easing Functions
+                </div>
+                <div class="feature-desc">
+                    All animations use cubic-bezier(0.34, 1.56, 0.64, 1) for bouncy, elastic transitions. Creates a more playful and modern feel compared to standard easing.
+                </div>
+                <div class="code-snippet">
+                    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 30px;">
+                <h2 style="margin-bottom: 20px;">Try It Yourself!</h2>
+                <p style="color: #5F6368; margin-bottom: 20px;">Open <strong>index.html</strong> and experience all 3D effects</p>
+                <a href="index.html" class="demo-button">
+                    <i class="fas fa-rocket"></i> Launch Full UI
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Apply 3D mouse follow to this page too
+        document.addEventListener('mousemove', function(e) {
+            const cards = document.querySelectorAll('.feature-card');
+            
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                const angleX = (mouseY - centerY) * 0.1;
+                const angleY = (mouseX - centerX) * 0.1;
+                const distance = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
+                const proximity = Math.max(0, 1 - distance / 500);
+                
+                card.style.transform = `
+                    perspective(1000px)
+                    rotateX(${angleX * proximity}deg)
+                    rotateY(${angleY * proximity}deg)
+                    scale(${1 + proximity * 0.02})
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

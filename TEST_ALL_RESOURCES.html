@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test - All Resources</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quick Test: All Resources Page</h1>
+        <button onclick="testLoadAllExternalLinks()">Test Load All Resources</button>
+        <hr>
+        <div id="testContainer"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function testLoadAllExternalLinks() {
+            const container = document.getElementById('testContainer');
+            container.innerHTML = '<p>Loading...</p>';
+            
+            setTimeout(() => {
+                console.log('Documents array:', typeof documents, documents ? documents.length : 'undefined');
+                
+                if (!documents || documents.length === 0) {
+                    container.innerHTML = '<p>ERROR: Documents not loaded</p>';
+                    return;
+                }
+
+                console.log('First document:', documents[0]);
+                console.log('First document externalLinks:', documents[0].externalLinks);
+
+                container.innerHTML = '';
+                let totalLinks = 0;
+
+                documents.forEach((doc, idx) => {
+                    const links = doc.externalLinks || [];
+                    console.log(`Doc ${idx} (${doc.title}): ${links.length} links`);
+                    totalLinks += links.length;
+
+                    if (links.length > 0) {
+                        const section = document.createElement('div');
+                        section.className = 'resource-section';
+                        section.innerHTML = `<h3>${doc.title} (${links.length} links)</h3>`;
+                        
+                        const list = document.createElement('div');
+                        list.className = 'resource-links';
+                        
+                        links.slice(0, 5).forEach(link => {
+                            const url = typeof link === 'string' ? link : (link.url || link);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.target = '_blank';
+                            a.className = 'doc-link';
+                            a.textContent = url.slice(0, 60) + '...';
+                            list.appendChild(a);
+                        });
+                        
+                        section.appendChild(list);
+                        container.appendChild(section);
+                    }
+                });
+
+                const summary = document.createElement('p');
+                summary.style.marginTop = '20px';
+                summary.innerHTML = `<strong>Total Links Generated: ${totalLinks}</strong>`;
+                container.appendChild(summary);
+            }, 500);
+        }
+    </script>
+</body>
+</html>

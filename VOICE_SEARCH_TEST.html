@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Search Test</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .test-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .test-info {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #1976d2;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #388e3c;
+            border-left-color: #388e3c;
+        }
+        .warning {
+            background: #fff3e0;
+            color: #f57c00;
+            border-left-color: #f57c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🎤 Voice Search Test</h1>
+        
+        <div class="test-info success">
+            <strong>✓ Voice Search Enabled</strong><br>
+            Click the microphone button to test voice search
+        </div>
+
+        <div style="margin: 30px 0;">
+            <h3>How to Test:</h3>
+            <ol style="text-align: left; display: inline-block;">
+                <li>Click the red microphone button below</li>
+                <li>Speak clearly (e.g., "React", "Laravel", "Python")</li>
+                <li>Wait for the text to appear in the search box</li>
+                <li>It will automatically search</li>
+            </ol>
+        </div>
+
+        <div class="search-box" style="margin: 30px auto; max-width: 400px;">
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <input type="text" id="searchInput" class="search-input" 
+                   placeholder="Say something..." 
+                   readonly>
+            <button class="voice-btn" onclick="startVoiceSearch()" title="Voice Search">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
+
+        <div class="test-info warning">
+            <strong>Note:</strong> Requires Chrome, Edge, or Safari browser
+        </div>
+
+        <p id="status" style="margin-top: 20px; color: var(--text-secondary);"></p>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('searchInput').value = 'Click microphone to test...';
+        
+        console.log('✓ Voice Search test page loaded');
+        console.log('✓ startVoiceSearch function:', typeof startVoiceSearch);
+        console.log('✓ Browser supports Web Speech API:', !!(window.SpeechRecognition || window.webkitSpeechRecognition));
+        
+        // Update status
+        const hasSupport = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+        document.getElementById('status').innerHTML = hasSupport 
+            ? '✓ Voice Search Ready - Your browser supports it!' 
+            : '✗ Voice Search Not Available - Use Chrome, Edge, or Safari';
+        document.getElementById('status').style.color = hasSupport ? '#388e3c' : '#f57c00';
+    </script>
+</body>
+</html>

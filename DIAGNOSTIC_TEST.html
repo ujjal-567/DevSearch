@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diagnostic Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+        .test { background: white; padding: 15px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        .pass { border-left: 4px solid green; }
+        .fail { border-left: 4px solid red; }
+        h1 { color: #333; }
+        code { background: #f0f0f0; padding: 2px 6px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Search Engine Diagnostic Test</h1>
+    <div id="results"></div>
+
+    <script src="script.js"></script>
+    <script>
+        const tests = [];
+        
+        function addTest(name, result, details) {
+            tests.push({ name, result, details });
+            const status = result ? '✓ PASS' : '✗ FAIL';
+            const className = result ? 'pass' : 'fail';
+            document.getElementById('results').innerHTML += `
+                <div class="test ${className}">
+                    <strong>${status}: ${name}</strong><br>
+                    <small>${details}</small>
+                </div>
+            `;
+        }
+
+        // Test 1: Documents loaded
+        const docsLoaded = typeof documents !== 'undefined' && Array.isArray(documents);
+        addTest('Documents Array Loaded', docsLoaded, `Documents: ${docsLoaded ? documents.length : 'NOT FOUND'}`);
+
+        // Test 2: Check for new languages
+        const hasC = documents && documents.find(d => d.language === 'c');
+        addTest('C Language Document', !!hasC, hasC ? `Found: "${hasC.title}"` : 'NOT FOUND');
+
+        const hasPHP = documents && documents.find(d => d.language === 'php');
+        addTest('PHP Language Document', !!hasPHP, hasPHP ? `Found: "${hasPHP.title}"` : 'NOT FOUND');
+
+        const hasLaravel = documents && documents.find(d => d.language === 'laravel');
+        addTest('Laravel Framework Document', !!hasLaravel, hasLaravel ? `Found: "${hasLaravel.title}"` : 'NOT FOUND');
+
+        const hasFlutter = documents && documents.find(d => d.language === 'flutter');
+        addTest('Flutter Framework Document', !!hasFlutter, hasFlutter ? `Found: "${hasFlutter.title}"` : 'NOT FOUND');
+
+        // Test 3: Check languageLinks
+        const langLinksExists = typeof languageLinks !== 'undefined';
+        addTest('LanguageLinks Object', langLinksExists, langLinksExists ? 'Found' : 'NOT FOUND');
+
+        const hasC_links = languageLinks && languageLinks.c;
+        addTest('C Language Links', !!hasC_links, hasC_links ? `C links found` : 'NOT FOUND');
+
+        const hasLaravel_links = languageLinks && languageLinks.laravel;
+        addTest('Laravel Links', !!hasLaravel_links, hasLaravel_links ? `Laravel links found` : 'NOT FOUND');
+
+        // Test 4: Check external links generation
+        const firstDoc = documents && documents[0];
+        const hasExtLinks = firstDoc && firstDoc.externalLinks && firstDoc.externalLinks.length > 0;
+        addTest('External Links Generated', hasExtLinks, firstDoc ? `Doc 1 has ${firstDoc.externalLinks ? firstDoc.externalLinks.length : 0} links` : 'No documents');
+
+        // Test 5: Search function exists
+        const searchExists = typeof executeSearch === 'function';
+        addTest('executeSearch Function', searchExists, searchExists ? 'Found' : 'NOT FOUND');
+
+        // Test 6: Test actual search
+        if (searchExists && documents && documents.length > 0) {
+            currentResults = [];
+            currentPage = 1;
+            const testQuery = 'laravel';
+            
+            // Simulate search
+            currentResults = documents.filter(doc => {
+                const titleLower = doc.title.toLowerCase();
+                const contentLower = doc.content.toLowerCase();
+                return titleLower.includes(testQuery) || contentLower.includes(testQuery);
+            });
+
+            addTest(`Search: "${testQuery}"`, currentResults.length > 0, `Found ${currentResults.length} result(s): ${currentResults.map(r => r.title).join(', ')}`);
+        }
+
+        // Test 7: Check siteDomains
+        const sitesExists = typeof siteDomains !== 'undefined';
+        addTest('SiteDomains Array', sitesExists, sitesExists ? `${siteDomains.length} domains` : 'NOT FOUND');
+
+        // Test 8: Check generateExternalLinks function
+        const genLinksExists = typeof generateExternalLinks === 'function';
+        addTest('generateExternalLinks Function', genLinksExists, genLinksExists ? 'Found' : 'NOT FOUND');
+
+        // Summary
+        const passed = tests.filter(t => t.result).length;
+        const total = tests.length;
+        document.getElementById('results').innerHTML += `
+            <div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 4px;">
+                <h3>📊 Summary: ${passed}/${total} tests passed</h3>
+                ${passed === total ? '<p style="color: green;">✓ All systems operational!</p>' : '<p style="color: red;">⚠ Some systems need attention</p>'}
+            </div>
+        `;
+    </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo"><i class="fas fa-search-code"></i> DevSearch</div>
+      <nav class="nav">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      </nav>
+      <div id="authControls" class="auth-controls"></div>
+    </header>
+    <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-adjust"></i> Toggle Theme</button>
+    <main class="profile-main">
+    <section class="profile-left">
+      <div style="position:relative;">
+        <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic-lg" id="profilePic" />
+        <label for="profilePicInput" class="profile-pic-label"><i class="fas fa-camera"></i></label>
+        <input type="file" id="profilePicInput" class="profile-pic-upload" accept="image/*" />
+      </div>
+      <h2 class="profile-username" id="profileUsername">Your Name</h2>
+      <p class="profile-bio" id="profileBio">Add your bio here...</p>
+      <div class="profile-skills" id="profileSkills">
+        <!-- Skills will appear here -->
+      </div>
+      <div class="profile-level">
+        <div class="level-bar"><div class="level-bar-inner" id="levelBar" style="width:0%"></div></div>
+        <div class="level-label" id="levelLabel">No data yet</div>
+      </div>
+      <div class="profile-badges" id="profileBadges">
+        <!-- Badges will appear here -->
+      </div>
+      <div class="profile-actions">
+        <button class="profile-action-btn" onclick="editProfile()"><i class="fas fa-edit"></i> Edit</button>
+        <button class="profile-action-btn" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Log out</button>
+      </div>
+    </section>
+    <section class="profile-right">
+      <div>
+        <div class="profile-section-title"><i class="fas fa-chart-bar"></i> Statistics</div>
+        <div class="profile-stats" id="profileStats">
+          <div class="stat-card"><div class="stat-value">-</div><div class="stat-label">No stats</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="profile-section-title"><i class="fas fa-history"></i> Recent Activity</div>
+        <div class="profile-activity">
+          <ul class="activity-list" id="activityList">
+            <li>No activity yet</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="profile-section-title"><i class="fas fa-cog"></i> Settings</div>
+        <div class="profile-actions">
+          <button class="profile-action-btn"><i class="fas fa-key"></i> Change Password</button>
+          <button class="profile-action-btn"><i class="fas fa-shield-alt"></i> 2FA</button>
+          <button class="profile-action-btn"><i class="fab fa-google"></i> Connect Google</button>
+          <button class="profile-action-btn"><i class="fab fa-github"></i> Connect GitHub</button>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+  <script src="profile_pic.js"></script>
+  <script>
+    function getStoredUser() {
+      try {
+        const raw = localStorage.getItem('devsearchUser');
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    function editProfile() {
+      alert('Profile editing coming soon!');
+    }
+
+    function logoutUser() {
+      // Save profile pic before logout
+      const storedUser = getStoredUser();
+      if (storedUser && storedUser.profilePic) {
+        localStorage.setItem('profilePic_' + storedUser.email, storedUser.profilePic);
+      }
+      localStorage.removeItem('devsearchUser');
+      window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof initAuthUI === 'function') initAuthUI();
+      
+      const storedUser = getStoredUser();
+      if (!storedUser) {
+        alert('You are not logged in. Please log in first.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Display user info from localStorage
+      document.getElementById('profileUsername').textContent = storedUser.name || storedUser.email || 'User';
+      
+      // Load profile picture: first check current user data, then check saved pic by email
+      if (storedUser.profilePic) {
+        document.getElementById('profilePic').src = storedUser.profilePic;
+      } else {
+        const savedPic = localStorage.getItem('profilePic_' + storedUser.email);
+        if (savedPic) {
+          document.getElementById('profilePic').src = savedPic;
+          // Restore to user object so it persists
+          storedUser.profilePic = savedPic;
+          localStorage.setItem('devsearchUser', JSON.stringify(storedUser));
+        }
+      }
+
+      // Load theme preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+      }
+    });
+
+    // Profile pic upload
+    document.getElementById('profilePicInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        document.getElementById('profilePic').src = ev.target.result;
+        // Save to localStorage
+        const user = getStoredUser();
+        if (user) {
+          user.profilePic = ev.target.result;
+          localStorage.setItem('devsearchUser', JSON.stringify(user));
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevSearch - Universal Code Search Engine</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Enhanced Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-search-code"></i>
+                DevSearch
+            </div>
+            <nav class="nav">
+                <a href="#" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a>
+                <a href="#" onclick="showPage('about')"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#" onclick="showPage('advanced')"><i class="fas fa-sliders-h"></i> Advanced</a>
+                <a href="#" onclick="showPage('languages')"><i class="fas fa-code"></i> Languages</a>
+                <a href="languages.html"><i class="fas fa-video"></i> Tutorials</a>
+                <a href="videos.html"><i class="fas fa-film"></i> Videos</a>
+                <a href="#" onclick="showPage('settings')"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" onclick="showPage('allResources'); loadAllExternalLinks()"><i class="fas fa-link"></i> All Resources</a>
+            </nav>
+
+            <!-- Authentication controls (updated dynamically) -->
+            <div id="authControls" class="auth-controls">
+                <a href="login.html" class="auth-btn login-btn">Log in</a>
+                <a href="signup.html" class="auth-btn signup-btn">Sign up</a>
+            </div>
+        </header>
+
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="search-container">
+                <h1 class="title">
+                    <i class="fas fa-search-code"></i>
+                    DevSearch
+                </h1>
+                <p class="subtitle">Universal Programming Language & Framework Search Engine</p>
+                
+                <!-- Enhanced Search Box -->
+                <div class="search-box">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="text" id="searchInput" class="search-input" 
+                           placeholder="Search 100+ programming languages, frameworks, and tools..." 
+                           onkeypress="handleSearchKeypress(event)"
+                           oninput="showLiveSuggestions()">
+                    <button class="search-btn" onclick="performSearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="voice-btn" onclick="startVoiceSearch()" title="Voice Search">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+
+                <!-- Live Suggestions -->
+                <div id="liveSuggestions" class="live-suggestions"></div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="totalLangs">100+</span>
+                        <span class="stat-label">Languages</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="totalFrameworks">50+</span>
+                        <span class="stat-label">Frameworks</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="totalDocs">500+</span>
+                        <span class="stat-label">Documents</span>
+                    </div>
+                </div>
+
+                <!-- Popular Categories -->
+                <div class="categories-grid">
+                    <div class="category-card" onclick="searchQuery('python')">
+                        <i class="fab fa-python"></i>
+                        <span>Python</span>
+                    </div>
+                    <div class="category-card" onclick="searchQuery('javascript')">
+                        <i class="fab fa-js-square"></i>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="category-card" onclick="searchQuery('java')">
+                        <i class="fab fa-java"></i>
+                        <span>Java</span>
+                    </div>
+                    <div class="category-card" onclick="searchQuery('react')">
+                        <i class="fab fa-react"></i>
+                        <span>React</span>
+                    </div>
+                    <div class="category-card" onclick="searchQuery('node')">
+                        <i class="fab fa-node-js"></i>
+                        <span>Node.js</span>
+                    </div>
+                    <div class="category-card" onclick="searchQuery('database')">
+                        <i class="fas fa-database"></i>
+                        <span>Databases</span>
+                    </div>
+                    <div class="category-card" onclick="searchQuery('cloud')">
+                        <i class="fas fa-cloud"></i>
+                        <span>Cloud</span>
+                    </div>
+                    <div class="category-card" onclick="searchQuery('mobile')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Mobile</span>
+                    </div>
+                </div>
+
+                <!-- Trending Searches -->
+                <div class="trending-searches">
+                    <h3><i class="fas fa-fire"></i> Trending Searches</h3>
+                    <div class="trending-tags">
+                        <span class="trending-tag" onclick="searchQuery('machine learning')">machine learning</span>
+                        <span class="trending-tag" onclick="searchQuery('web development')">web development</span>
+                        <span class="trending-tag" onclick="searchQuery('data science')">data science</span>
+                        <span class="trending-tag" onclick="searchQuery('cybersecurity')">cybersecurity</span>
+                        <span class="trending-tag" onclick="searchQuery('devops')">devops</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Resources Page -->
+        <section id="allResources" class="page">
+            <div class="content-box">
+                <h2><i class="fas fa-link"></i> All External Resources</h2>
+                <p>All generated external documentation and video links (programmatically created).</p>
+                <div id="allResourcesContainer" class="all-resources-container">
+                    <p>Loading resources... Click the "All Resources" link again if they don't appear.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Page -->
+        <section id="results" class="page">
+            <div class="results-header">
+                <div class="results-search">
+                    <input type="text" id="resultsInput" class="results-input" 
+                           placeholder="Search again..." 
+                           onkeypress="handleSearchKeypress(event)"
+                           oninput="showLiveSuggestions()">
+                    <button class="search-btn" onclick="performSearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+                <div class="results-controls">
+                    <select id="sortSelect" onchange="sortResults()" class="sort-select">
+                        <option value="relevance">Sort by Relevance</option>
+                        <option value="popularity">Sort by Popularity</option>
+                        <option value="date">Sort by Date</option>
+                        <option value="complexity">Sort by Complexity</option>
+                    </select>
+                    <button class="filter-btn" onclick="toggleFilterPanel()">
+                        <i class="fas fa-filter"></i> Filters
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Filter Panel -->
+            <div id="filterPanel" class="filter-panel">
+                <div class="filter-section">
+                    <h4>Programming Languages</h4>
+                    <div class="filter-tags" id="languageFilters">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h4>Frameworks & Tools</h4>
+                    <div class="filter-tags" id="frameworkFilters">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h4>Difficulty Level</h4>
+                    <div class="filter-tags">
+                        <span class="filter-tag" data-level="beginner">Beginner</span>
+                        <span class="filter-tag" data-level="intermediate">Intermediate</span>
+                        <span class="filter-tag" data-level="advanced">Advanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-info">
+                <p id="resultsCount">About 0 results</p>
+                <div class="search-time" id="searchTime"></div>
+            </div>
+
+            <div class="results-container" id="resultsContainer">
+                <!-- Results populated by JavaScript -->
+            </div>
+
+            <div class="pagination">
+                <button onclick="previousPage()" id="prevBtn" disabled>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <span id="pageInfo">Page 1</span>
+                <button onclick="nextPage()" id="nextBtn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Languages Page -->
+        <section id="languages" class="page">
+            <div class="content-box">
+                <h2><i class="fas fa-globe"></i> Supported Languages & Technologies</h2>
+                
+                <div class="languages-grid">
+                    <!-- Programming Languages -->
+                    <div class="tech-category">
+                        <h3><i class="fas fa-code"></i> Programming Languages</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag" onclick="searchQuery('python')">Python</span>
+                            <span class="tech-tag" onclick="searchQuery('javascript')">JavaScript</span>
+                            <span class="tech-tag" onclick="searchQuery('java')">Java</span>
+                            <span class="tech-tag" onclick="searchQuery('c++')">C++</span>
+                            <span class="tech-tag" onclick="searchQuery('c#')">C#</span>
+                            <span class="tech-tag" onclick="searchQuery('php')">PHP</span>
+                            <span class="tech-tag" onclick="searchQuery('ruby')">Ruby</span>
+                            <span class="tech-tag" onclick="searchQuery('go')">Go</span>
+                            <span class="tech-tag" onclick="searchQuery('rust')">Rust</span>
+                            <span class="tech-tag" onclick="searchQuery('swift')">Swift</span>
+                            <span class="tech-tag" onclick="searchQuery('kotlin')">Kotlin</span>
+                            <span class="tech-tag" onclick="searchQuery('typescript')">TypeScript</span>
+                            <span class="tech-tag" onclick="searchQuery('r language')">R</span>
+                            <span class="tech-tag" onclick="searchQuery('scala')">Scala</span>
+                            <span class="tech-tag" onclick="searchQuery('perl')">Perl</span>
+                        </div>
+                    </div>
+
+                    <!-- Web Technologies -->
+                    <div class="tech-category">
+                        <h3><i class="fas fa-globe"></i> Web Development</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag" onclick="searchQuery('html')">HTML</span>
+                            <span class="tech-tag" onclick="searchQuery('css')">CSS</span>
+                            <span class="tech-tag" onclick="searchQuery('react')">React</span>
+                            <span class="tech-tag" onclick="searchQuery('vue')">Vue.js</span>
+                            <span class="tech-tag" onclick="searchQuery('angular')">Angular</span>
+                            <span class="tech-tag" onclick="searchQuery('node.js')">Node.js</span>
+                            <span class="tech-tag" onclick="searchQuery('express')">Express</span>
+                            <span class="tech-tag" onclick="searchQuery('django')">Django</span>
+                            <span class="tech-tag" onclick="searchQuery('flask')">Flask</span>
+                            <span class="tech-tag" onclick="searchQuery('laravel')">Laravel</span>
+                            <span class="tech-tag" onclick="searchQuery('spring')">Spring</span>
+                            <span class="tech-tag" onclick="searchQuery('asp.net')">ASP.NET</span>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Development -->
+                    <div class="tech-category">
+                        <h3><i class="fas fa-mobile-alt"></i> Mobile Development</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag" onclick="searchQuery('react native')">React Native</span>
+                            <span class="tech-tag" onclick="searchQuery('flutter')">Flutter</span>
+                            <span class="tech-tag" onclick="searchQuery('android')">Android</span>
+                            <span class="tech-tag" onclick="searchQuery('ios')">iOS</span>
+                            <span class="tech-tag" onclick="searchQuery('xamarin')">Xamarin</span>
+                            <span class="tech-tag" onclick="searchQuery('ionic')">Ionic</span>
+                        </div>
+                    </div>
+
+                    <!-- Databases -->
+                    <div class="tech-category">
+                        <h3><i class="fas fa-database"></i> Databases</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag" onclick="searchQuery('mysql')">MySQL</span>
+                            <span class="tech-tag" onclick="searchQuery('postgresql')">PostgreSQL</span>
+                            <span class="tech-tag" onclick="searchQuery('mongodb')">MongoDB</span>
+                            <span class="tech-tag" onclick="searchQuery('redis')">Redis</span>
+                            <span class="tech-tag" onclick="searchQuery('sqlite')">SQLite</span>
+                            <span class="tech-tag" onclick="searchQuery('oracle')">Oracle</span>
+                            <span class="tech-tag" onclick="searchQuery('sql server')">SQL Server</span>
+                        </div>
+                    </div>
+
+                    <!-- DevOps & Cloud -->
+                    <div class="tech-category">
+                        <h3><i class="fas fa-cloud"></i> DevOps & Cloud</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag" onclick="searchQuery('docker')">Docker</span>
+                            <span class="tech-tag" onclick="searchQuery('kubernetes')">Kubernetes</span>
+                            <span class="tech-tag" onclick="searchQuery('aws')">AWS</span>
+                            <span class="tech-tag" onclick="searchQuery('azure')">Azure</span>
+                            <span class="tech-tag" onclick="searchQuery('gcp')">Google Cloud</span>
+                            <span class="tech-tag" onclick="searchQuery('jenkins')">Jenkins</span>
+                            <span class="tech-tag" onclick="searchQuery('git')">Git</span>
+                            <span class="tech-tag" onclick="searchQuery('terraform')">Terraform</span>
+                        </div>
+                    </div>
+
+                    <!-- Data Science & AI -->
+                    <div class="tech-category">
+                        <h3><i class="fas fa-brain"></i> Data Science & AI</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag" onclick="searchQuery('machine learning')">Machine Learning</span>
+                            <span class="tech-tag" onclick="searchQuery('tensorflow')">TensorFlow</span>
+                            <span class="tech-tag" onclick="searchQuery('pytorch')">PyTorch</span>
+                            <span class="tech-tag" onclick="searchQuery('pandas')">Pandas</span>
+                            <span class="tech-tag" onclick="searchQuery('numpy')">NumPy</span>
+                            <span class="tech-tag" onclick="searchQuery('data analysis')">Data Analysis</span>
+                            <span class="tech-tag" onclick="searchQuery('deep learning')">Deep Learning</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced About Page -->
+        <section id="about" class="page">
+            <div class="content-box">
+                <h2><i class="fas fa-rocket"></i> About DevSearch</h2>
+                <p>DevSearch is the most comprehensive programming language and technology search engine, indexing 500+ documents across 100+ technologies.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-code"></i></div>
+                        <div class="stat-number" id="totalLangsAbout">100+</div>
+                        <div class="stat-label">Languages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-cube"></i></div>
+                        <div class="stat-number" id="totalFrameworksAbout">50+</div>
+                        <div class="stat-label">Frameworks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="stat-number" id="totalDocsAbout">500+</div>
+                        <div class="stat-label">Documents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-search"></i></div>
+                        <div class="stat-number" id="totalSearches">0</div>
+                        <div class="stat-label">Total Searches</div>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-star"></i> Key Features</h3>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> <strong>Universal Search</strong> - 100+ programming languages and frameworks</li>
+                    <li><i class="fas fa-check"></i> <strong>AI-Powered Results</strong> - Smart ranking and relevance scoring</li>
+                    <li><i class="fas fa-check"></i> <strong>Live Suggestions</strong> - Real-time search suggestions</li>
+                    <li><i class="fas fa-check"></i> <strong>Voice Search</strong> - Speak your search queries</li>
+                    <li><i class="fas fa-check"></i> <strong>Advanced Filtering</strong> - Filter by language, framework, difficulty</li>
+                    <li><i class="fas fa-check"></i> <strong>Code Examples</strong> - Practical code snippets and examples</li>
+                    <li><i class="fas fa-check"></i> <strong>Trending Technologies</strong> - Stay updated with latest trends</li>
+                </ul>
+
+                <button class="btn-primary" onclick="showPage('home')">
+                    <i class="fas fa-search"></i> Start Searching
+                </button>
+            </div>
+        </section>
+
+        <!-- Enhanced Advanced Search Page -->
+        <section id="advanced" class="page">
+            <div class="content-box">
+                <h2><i class="fas fa-sliders-h"></i> Advanced Search</h2>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-search"></i> Search Terms:</label>
+                    <input type="text" id="advancedQuery" placeholder="Enter search terms..." class="form-input">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-code"></i> Language:</label>
+                        <select id="advancedLanguage" class="form-select">
+                            <option value="">All Languages</option>
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="java">Java</option>
+                            <option value="cpp">C++</option>
+                            <option value="csharp">C#</option>
+                            <option value="php">PHP</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="go">Go</option>
+                            <option value="rust">Rust</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-cube"></i> Framework:</label>
+                        <select id="advancedFramework" class="form-select">
+                            <option value="">All Frameworks</option>
+                            <option value="react">React</option>
+                            <option value="vue">Vue.js</option>
+                            <option value="angular">Angular</option>
+                            <option value="django">Django</option>
+                            <option value="flask">Flask</option>
+                            <option value="spring">Spring</option>
+                            <option value="laravel">Laravel</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-filter"></i> Search Type:</label>
+                        <select id="searchType" class="form-select">
+                            <option value="contains">Contains</option>
+                            <option value="exact">Exact Match</option>
+                            <option value="startswith">Starts With</option>
+                            <option value="endswith">Ends With</option>
+                            <option value="regex">Regular Expression</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-sort"></i> Sort By:</label>
+                        <select id="sortBy" class="form-select">
+                            <option value="relevance">Relevance</option>
+                            <option value="popularity">Popularity</option>
+                            <option value="date">Date Added</option>
+                            <option value="complexity">Complexity</option>
+                            <option value="alphabetical">Alphabetical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-tags"></i> Tags (comma separated):</label>
+                    <input type="text" id="advancedTags" placeholder="web, mobile, database, cloud..." class="form-input">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="performAdvancedSearch()">
+                        <i class="fas fa-search"></i> Advanced Search
+                    </button>
+                    <button class="btn-secondary" onclick="showPage('home')">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Settings Page -->
+        <section id="settings" class="page">
+            <div class="content-box">
+                <h2><i class="fas fa-cog"></i> Settings</h2>
+                
+                <div class="settings-group">
+                    <h3><i class="fas fa-palette"></i> Appearance</h3>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="darkMode" onchange="toggleDarkMode()">
+                        <span>Dark Mode</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="compactView" onchange="toggleCompactView()" checked>
+                        <span>Compact View</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="animations" onchange="toggleAnimations()" checked>
+                        <span>Animations</span>
+                    </label>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-search"></i> Search Preferences</h3>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="enableHistory" onchange="toggleHistory()" checked>
+                        <span>Enable Search History</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="autoSuggest" onchange="toggleAutoSuggest()" checked>
+                        <span>Auto-Suggest Results</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="voiceSearch" onchange="toggleVoiceSearch()" checked>
+                        <span>Voice Search</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" id="aiRanking" onchange="toggleAIRanking()" checked>
+                        <span>AI-Powered Ranking</span>
+                    </label>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-database"></i> Data Management</h3>
+                    <button class="btn-secondary" onclick="clearHistory()">
+                        <i class="fas fa-trash"></i> Clear Search History
+                    </button>
+                    <button class="btn-secondary" onclick="exportData()">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button class="btn-secondary" onclick="importData()">
+                        <i class="fas fa-upload"></i> Import Data
+                    </button>
+                </div>
+
+                <div class="settings-group">
+                    <h3><i class="fas fa-history"></i> Search History</h3>
+                    <div id="historyList" class="history-list">
+                        <p>No search history yet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>DevSearch</h4>
+                    <p>The universal programming language search engine</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <a href="#" onclick="showPage('languages')">Languages</a>
+                    <a href="#" onclick="showPage('about')">About</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="#" onclick="showPage('settings')">Settings</a>
+                    <a href="#" onclick="clearHistory()">Clear History</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DevSearch - Universal Code Search Engine. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Voice Search Modal -->
+    <div id="voiceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeVoiceModal()">&times;</span>
+            <h3><i class="fas fa-microphone"></i> Voice Search</h3>
+            <div id="voiceStatus" class="voice-status">
+                <i class="fas fa-microphone"></i>
+                <p>Listening...</p>
+            </div>
+            <div id="voiceResult" class="voice-result"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Renders all generated external links from `documents` (populated by script.js)
+        function loadAllExternalLinks() {
+            const container = document.getElementById('allResourcesContainer');
+            if (!container) return;
+
+            // Wait for documents to be populated and externalLinks to be generated
+            setTimeout(() => {
+                container.innerHTML = '';
+
+                if (typeof documents === 'undefined' || !Array.isArray(documents) || documents.length === 0) {
+                    container.innerHTML = '<p>No resources available. Make sure the application has initialized and generated links.</p>';
+                    return;
+                }
+
+                let totalLinks = 0;
+                let sectionsCreated = 0;
+
+                documents.forEach(doc => {
+                    const links = doc.externalLinks || [];
+                    if (!links.length) return;
+
+                    sectionsCreated++;
+                    totalLinks += links.length;
+
+                    const section = document.createElement('div');
+                    section.className = 'resource-section';
+
+                    const title = document.createElement('h3');
+                    title.textContent = (doc.title || doc.filename || (doc.language ? (doc.language + ' - ' + (doc.title || 'Resource')) : 'Resource')) + ` (${links.length} links)`;
+                    section.appendChild(title);
+
+                    const list = document.createElement('div');
+                    list.className = 'resource-links';
+
+                    links.forEach(linkObj => {
+                        // linkObj may be a string URL or an object {url, title}
+                        const url = (typeof linkObj === 'string') ? linkObj : (linkObj.url || linkObj.link || linkObj.href || linkObj);
+                        const text = (typeof linkObj === 'string') ? url : (linkObj.title || linkObj.name || url);
+                        if (!url) return;
+
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.className = 'doc-link';
+                        a.title = text;
+                        a.textContent = text.length > 100 ? text.slice(0, 97) + '...' : text;
+                        list.appendChild(a);
+                    });
+
+                    section.appendChild(list);
+                    container.appendChild(section);
+                });
+
+                if (sectionsCreated === 0) {
+                    container.innerHTML = '<p>No external links generated yet. This may happen if external link generation is disabled or documents are not fully loaded.</p>';
+                } else {
+                    const summary = document.createElement('div');
+                    summary.style.marginTop = '24px';
+                    summary.style.padding = '16px';
+                    summary.style.backgroundColor = 'var(--bg-secondary)';
+                    summary.style.borderRadius = '8px';
+                    summary.style.textAlign = 'center';
+                    summary.style.color = 'var(--text-secondary)';
+                    summary.innerHTML = `<strong>Total: ${totalLinks} resources across ${sectionsCreated} documents</strong>`;
+                    container.appendChild(summary);
+                }
+            }, 500);
+        }
+    </script>
+        <script>
+            // Initialize authentication UI on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof initAuthUI === 'function') initAuthUI();
+            });
+        </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Videos — 100 Tutorials</title>
+  <link rel="stylesheet" href="css/videos.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1>All Tutorials — Videos (100)</h1>
+      <p class="summary">Click a card to open the video in a modal or open on YouTube.</p>
+      <nav class="mini">
+        <a href="index.html">&larr; Back to DevSearch</a>
+        <a href="languages.html">Languages list</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <input id="videoSearch" class="search" placeholder="Search languages or video titles..." aria-label="Search videos">
+    <div id="videosContainer" class="videos-grid"></div>
+  </main>
+
+  <!-- Modal for playing video -->
+  <div id="playerModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="closeModal" class="close">✕</button>
+      <div id="playerWrap" class="player-wrap"></div>
+    </div>
+  </div>
+
+  <script>
+    // Data: 20 languages x 5 videos each (URLs)
+    const data = [
+      {"language":"Python","videos":["https://www.youtube.com/watch?v=rfscVS0vtbw","https://www.youtube.com/watch?v=_uQrJ0TkZlc","https://www.youtube.com/watch?v=kqtD5dpn9C8","https://www.youtube.com/watch?v=eWRfhZUzrAc","https://www.youtube.com/watch?v=YfO28IHpb_g"]},
+      {"language":"Java","videos":["https://www.youtube.com/watch?v=Qgl81fPcLc8","https://www.youtube.com/watch?v=eIrMbAQSU34","https://www.youtube.com/watch?v=RRubcjpTkks","https://www.youtube.com/watch?v=A74TOX803D0","https://www.youtube.com/watch?v=Hl-zzrqQoSE"]},
+      {"language":"C","videos":["https://www.youtube.com/watch?v=KJgsSFOSQv0","https://www.youtube.com/watch?v=ZSPZob_1TOk","https://www.youtube.com/watch?v=U3lIXkjpYKQ","https://www.youtube.com/watch?v=CPjZKsE9ZgU","https://www.youtube.com/watch?v=87SH2Cn0s9A"]},
+      {"language":"C++","videos":["https://www.youtube.com/watch?v=vLnPwxZdW4Y","https://www.youtube.com/watch?v=8jLOx1hD3_o","https://www.youtube.com/watch?v=ZzaPdXTrSb8","https://www.youtube.com/watch?v=HYggXT79I7c","https://www.youtube.com/watch?v=QBpE8nT8nJg"]},
+      {"language":"C#","videos":["https://www.youtube.com/watch?v=GhQdlIFylQ8","https://www.youtube.com/watch?v=wxznTygnRfQ","https://www.youtube.com/watch?v=SuLiu5AK9Ps","https://www.youtube.com/watch?v=gfkTfcpWqAY","https://www.youtube.com/watch?v=qvC4_XoBzSY"]},
+      {"language":"JavaScript","videos":["https://www.youtube.com/watch?v=W6NZfCO5SIk","https://www.youtube.com/watch?v=PkZNo7MFNFg","https://www.youtube.com/watch?v=hdI2bqOjy3c","https://www.youtube.com/watch?v=DHjqpvDnNGE","https://www.youtube.com/watch?v=lI1ae4REbFM"]},
+      {"language":"HTML","videos":["https://www.youtube.com/watch?v=pQN-pnXPaVg","https://www.youtube.com/watch?v=UB1O30fR-EE","https://www.youtube.com/watch?v=kUMe1FH4CHE","https://www.youtube.com/watch?v=PlxWf493en4","https://www.youtube.com/watch?v=3JluqTojuME"]},
+      {"language":"CSS","videos":["https://www.youtube.com/watch?v=1Rs2ND1ryYc","https://www.youtube.com/watch?v=OEV8gMkCHXQ","https://www.youtube.com/watch?v=yfoY53QXEnI","https://www.youtube.com/watch?v=Erd2TjQzVYI","https://www.youtube.com/watch?v=wRNinF7YQqQ"]},
+      {"language":"SQL","videos":["https://www.youtube.com/watch?v=HXV3zeQKqGY","https://www.youtube.com/watch?v=7S_tz1z_5bA","https://www.youtube.com/watch?v=9Pzj7Aj25lw","https://www.youtube.com/watch?v=hlGoQC332VM","https://www.youtube.com/watch?v=B8X70co0F3E"]},
+      {"language":"PHP","videos":["https://www.youtube.com/watch?v=OK_JCtrrv-c","https://www.youtube.com/watch?v=BUCiSSyIGGU","https://www.youtube.com/watch?v=2eebptXfEvw","https://www.youtube.com/watch?v=1SnPKhCdlsU","https://www.youtube.com/watch?v=4KFY2lTAqJ8"]},
+      {"language":"Ruby","videos":["https://www.youtube.com/watch?v=t_ispmWmdjY","https://www.youtube.com/watch?v=Dji9ALCgfpM","https://www.youtube.com/watch?v=8NoPydcJcz0","https://www.youtube.com/watch?v=3gNyxXrknvU","https://www.youtube.com/watch?v=UJw3c6OmCys"]},
+      {"language":"Go","videos":["https://www.youtube.com/watch?v=un6ZyFkqFKo","https://www.youtube.com/watch?v=YS4e4q9oBaU","https://www.youtube.com/watch?v=C8LgvuEBraI","https://www.youtube.com/watch?v=8uiZC0l4Ajw","https://www.youtube.com/watch?v=SqrbIlUwR0U"]},
+      {"language":"Rust","videos":["https://www.youtube.com/watch?v=ygL_xcavzQ4","https://www.youtube.com/watch?v=MsocPEZBd-M","https://www.youtube.com/watch?v=zF34dRivLOw","https://www.youtube.com/watch?v=VFIOSWy93H0","https://www.youtube.com/watch?v=NJyT2Z24xXk"]},
+      {"language":"Swift","videos":["https://www.youtube.com/watch?v=comQ1-x2a1Q","https://www.youtube.com/watch?v=F2ojC6TNwws","https://www.youtube.com/watch?v=Ulp1Kimblg0","https://www.youtube.com/watch?v=3bvazFv9pWg","https://www.youtube.com/watch?v=09TeUXjzpKs"]},
+      {"language":"Kotlin","videos":["https://www.youtube.com/watch?v=F9UC9DY-vIU","https://www.youtube.com/watch?v=EExSSotojVI","https://www.youtube.com/watch?v=Ebb8g8B8w1c","https://www.youtube.com/watch?v=H_oGi8uuDpA","https://www.youtube.com/watch?v=Y2VF8tmLFHw"]},
+      {"language":"Dart","videos":["https://www.youtube.com/watch?v=Ej_Pcr4uC2Q","https://www.youtube.com/watch?v=H0BMkLvYz0I","https://www.youtube.com/watch?v=5rtujDjt50I","https://www.youtube.com/watch?v=QG5aEmS9Fu0","https://www.youtube.com/watch?v=A1vzc-zGSU0"]},
+      {"language":"R","videos":["https://www.youtube.com/watch?v=_V8eKsto3Ug","https://www.youtube.com/watch?v=32o0DnuRjfg","https://www.youtube.com/watch?v=cAQx3-8wNyE","https://www.youtube.com/watch?v=Hc1TkcZJeyE","https://www.youtube.com/watch?v=6AVz6y-qE5k"]},
+      {"language":"MATLAB","videos":["https://www.youtube.com/watch?v=8-JZX1Hq0gY","https://www.youtube.com/watch?v=VnZvU8kX6Cw","https://www.youtube.com/watch?v=ub8biiN2jKg","https://www.youtube.com/watch?v=L3LMbpZIKhQ","https://www.youtube.com/watch?v=4fJBrditnJU"]},
+      {"language":"Scala","videos":["https://www.youtube.com/watch?v=ggU2zOKHnTE","https://www.youtube.com/watch?v=DzFt0YkZo8M","https://www.youtube.com/watch?v=Fq7F7nZq7Eo","https://www.youtube.com/watch?v=3jg1AheF4n0","https://www.youtube.com/watch?v=h7Q0mxe0STc"]},
+      {"language":"TypeScript","videos":["https://www.youtube.com/watch?v=30LWjhZzg50","https://www.youtube.com/watch?v=d56mG7DezGs","https://www.youtube.com/watch?v=BCg4U1FzODs","https://www.youtube.com/watch?v=NjN00cM18Z4","https://www.youtube.com/watch?v=H2KyU5F9v_A"]}
+    ];
+
+    const container = document.getElementById('videosContainer');
+    const modal = document.getElementById('playerModal');
+    const playerWrap = document.getElementById('playerWrap');
+    const closeModal = document.getElementById('closeModal');
+
+    function getYouTubeId(url){
+      const m = url.match(/[?&]v=([^&]+)/);
+      return m ? m[1] : null;
+    }
+
+    function createCard(lang, url){
+      const id = getYouTubeId(url);
+      const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : '';
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <a class="thumb" href="${url}" data-id="${id}" target="_blank" rel="noopener noreferrer">
+          <img src="${thumb}" alt="${lang} video thumbnail">
+        </a>
+        <div class="meta">
+          <div class="lang">${lang}</div>
+          <a class="watch" href="${url}" data-id="${id}" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+          <button class="playBtn" data-id="${id}">Play</button>
+        </div>
+      `;
+      // play in modal when Play button clicked
+      card.querySelector('.playBtn').addEventListener('click', e=>{
+        const vid = e.currentTarget.getAttribute('data-id');
+        if(!vid) return;
+        playerWrap.innerHTML = `<iframe width="100%" height="480" src="https://www.youtube.com/embed/${vid}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        modal.setAttribute('aria-hidden','false');
+        modal.style.display = 'flex';
+      });
+      return card;
+    }
+
+    // render all cards grouped by language
+    function render(filtered){
+      container.innerHTML = '';
+      (filtered||data).forEach(group=>{
+      const section = document.createElement('section');
+      section.className = 'group';
+      const h = document.createElement('h2');
+      h.textContent = group.language;
+      section.appendChild(h);
+      const grid = document.createElement('div');
+      grid.className = 'group-grid';
+      group.videos.forEach(v=>{
+        grid.appendChild(createCard(group.language, v));
+      });
+      section.appendChild(grid);
+      container.appendChild(section);
+      });
+    }
+
+    render();
+
+    // search/filter logic
+    const searchInput = document.getElementById('videoSearch');
+    let timeout = null;
+    searchInput.addEventListener('input', ()=>{
+      clearTimeout(timeout);
+      timeout = setTimeout(()=>{
+        const q = searchInput.value.trim().toLowerCase();
+        if(!q){ render(); return; }
+        const filtered = data.map(g=>({
+          language: g.language,
+          videos: g.videos.filter(v=> v.toLowerCase().includes(q) || g.language.toLowerCase().includes(q))
+        })).filter(g=>g.videos.length>0);
+        render(filtered);
+      },200);
+    });
+
+    closeModal.addEventListener('click', ()=>{
+      playerWrap.innerHTML = '';
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+    });
+
+    // close modal when clicking outside content
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal) { closeModal.click(); }
+    });
+  </script>
+</body>
+</html>
