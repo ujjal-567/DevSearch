@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SearchHub - Multi-Language Search Engine
 
 ## 📋 Overview
@@ -216,3 +217,6 @@ Perfect for beginners and intermediate developers!
 ---
 
 **Version 1.0** | Multi-Language Search Engine | 2025
+=======
+# DevSearch
+>>>>>>> 766b44abe9af84e8c7d42aa6f728aa430ff866ee
